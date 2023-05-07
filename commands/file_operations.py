@@ -39,11 +39,7 @@ class file_operations(Commands):
         self.append_to_file(LOG_FILE, log_entry)
 
     def safe_join(self, base: str, *paths) -> str:
-        if True:
-            new_path = os.path.normpath(os.path.join(base, *paths))
-        else:
-            new_path = os.path.normpath(os.path.join("/", *paths))
-        return new_path
+        return os.path.normpath(os.path.join(base, *paths))
 
     def split_file(
         self, content: str, max_length: int = 4000, overlap: int = 0
@@ -53,11 +49,9 @@ class file_operations(Commands):
 
         while start < content_length:
             end = start + max_length
-            if end + overlap < content_length:
-                chunk = content[start : end + overlap]
-            else:
-                chunk = content[start:content_length]
-            yield chunk
+            yield content[
+                start : end + overlap
+            ] if end + overlap < content_length else content[start:content_length]
             start += max_length - overlap
 
     def read_file(self, filename: str) -> str:
